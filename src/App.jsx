@@ -8,45 +8,46 @@ import fragmentShader from "./shaders/fragment.glsl";
 import vertexShader from "./shaders/vertex.glsl";
 import { DoubleSide } from "three";
 import { LineGeometry } from "three-stdlib";
+import { Shape, ExtrudeBufferGeometry, LineBasicMaterial, Group } from "three";
+
 
 function App() {
 
-  // function RoundedLine(){
-  //   const { width, height, radius } = useControls({
-  //     width: { value: 50, min: 41, max: 100, step: 1 },
-  //     height: { value: 50, min: 41, max: 100, step: 1 },
-  //     radius: { value: 20, min: 1, max: 30, step: 1 },
-  //   });
-    
-  //   const shapeR = new THREE.Shape();
+  function RoundedLineShape() {
 
-  //   const x = 0;
-  //   const y = 0;
+    const { width, height, radius, color } = useControls({
+      width: { value: 50, min: 41, max: 100, step: 1 },
+      height: { value: 50, min: 41, max: 100, step: 1 },
+      radius: { value: 6, min: 1, max: 30, step: 1 },
+      color: { value: "#7C52FF" },
 
-  //   shapeR.moveTo(x, y + radius);
-  //   shapeR.lineTo(x, y + height - radius);
-  //   shapeR.quadraticCurveTo(x, y + height, x + radius, y + height);
-  //   shapeR.lineTo(x + width - radius, y + height);
-  //   shapeR.quadraticCurveTo(
-  //     x + width,
-  //     y + height,
-  //     x + width,
-  //     y + height - radius
-  //   );
-  //   shapeR.lineTo(x + width, y + radius);
-  //   shapeR.quadraticCurveTo(x + width, y, x + width - radius, y);
-  //   shapeR.lineTo(x + radius, y);
-  //   shapeR.quadraticCurveTo(x, y, x, y + radius);
+    });
 
-  //   const points = shapeR.getPoints();
-	// 	const geometryPoints = new THREE.BufferGeometry().setFromPoints( points );
-  //   console.log(geometryPoints)
-  //   shapeR.autoClose = true;
-    
+    const shape = new Shape();
+
+    const x = -30;
+    const y = 0;
+
+    shape.moveTo(x, y + radius);
+    shape.lineTo(x, y + height - radius);
+    shape.quadraticCurveTo(x, y + height, x + radius, y + height);
+    shape.lineTo(x + width - radius, y + height);
+    shape.quadraticCurveTo(
+      x + width,
+      y + height,
+      x + width,
+      y + height - radius
+    );
+    shape.lineTo(x + width, y + radius);
+    shape.quadraticCurveTo(x + width, y, x + width - radius, y);
+    shape.lineTo(x + radius, y);
+    shape.quadraticCurveTo(x, y, x, y + radius);
   
-  //   return geometryPoints;
-
-  // }
+    const points = shape.getPoints();
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const material = new THREE.LineBasicMaterial({ color });
+    return <primitive object={new THREE.Line(geometry, material)} />;
+  }
 
   function RoundedRect() {
 
@@ -149,8 +150,19 @@ function App() {
         <Instance scale={1} position={[0, 0, 40]} />
         </Instances>
 
-
-
+        
+          <group position={[0, 0, 10]}>
+          <RoundedLineShape width={20} height={25} radius={5} color={'white'}  />
+          </group>
+          <group position={[0, 0, 20]}>
+          <RoundedLineShape width={20} height={25} radius={5} color={'white'}  />
+          </group>
+          <group position={[0, 0, 30]}>
+          <RoundedLineShape width={20} height={25} radius={5} color={'white'}  />
+          </group>
+          <group position={[0, 0, 40]}>
+          <RoundedLineShape width={20} height={25} radius={5} color={'white'}  />
+          </group>
     </Canvas>
   );
 }

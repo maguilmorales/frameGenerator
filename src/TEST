@@ -40,73 +40,15 @@ function App() {
     return roundedRectShape;
   }
 
-  const texture = useLoader(TextureLoader, "map2.png");
-
-  const { colorFrame, opacity, countOfFrames } = useControls({
-    colorFrame: { value: "#7C52FF" },
-    // alphaMapText: {value: textureMap },
-    opacity: {
-      value: 0.5,
-      min: 0,
-      max: 1,
-      step: 0.001,
-    },
-    countOfFrames: {
-      value: 1,
-      min: 1,
-      max: 6,
-      step: 1,
-    },
-  });
-
-  function updateInstancesZ(reff, x, y , z) {
-    useFrame(() => {
-     
-      reff.current.instanceMatrix.needsUpdate = true;
-      const instanceCount = reff.current?.instanceMatrix?.count;
-      for (let i = 0; i < instanceCount; i++) {
-        const instanceMatrix = new THREE.Matrix4().fromArray(
-          instRef.current.instanceMatrix.array,
-          i * 16
-        );
-        instanceMatrix.setPosition(new THREE.Vector3(x, y, z));
-        reff.current.instanceMatrix.setMatrixAt(i, instanceMatrix);
-      }
-    });
-  }
-
-
-  const instRef = useRef(null);
-  const zPos = 20;
-  const xPos = 20;
-  const yPos = 20;
-
-
-  console.log(instRef)
-  function updates() {
-  useEffect(() => {
-    // Call updateInstancesZ with your instancedMesh ref and the desired z position value
-    updateInstancesZ(instRef, xPos, yPos, zPos);
-  }, [instRef, xPos, yPos, zPos]);
-  }
-
 
   return (
-    <Canvas camera={{ position: [50, 0, 100] }}>
+    <Canvas camera={{ position: [90, 90, 100] }}>
       <OrbitControls enableDamping />
-      <color attach="background" args={["black"]} />
+      <color attach="background" args={[backgroundColorFrame]} />
       <ambientLight intensity={1} />
-
-      <instancedMesh ref={instRef} args={[null, null, countOfFrames]}>
-        <shapeGeometry args={[RoundedRect()]}/>
-        <meshStandardMaterial
-          side={DoubleSide}
-          color={colorFrame}
-          opacity={opacity}
-          transparent={true}
-        />
-      </instancedMesh>
-      
+      <Group position={[0, 0, 10]}>
+          <RoundedLineShape width={20} height={25} radius={5} color={'white'}  />
+          </Group>
     </Canvas>
   );
 }
