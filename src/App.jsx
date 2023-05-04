@@ -13,6 +13,8 @@ import { Shape, ExtrudeBufferGeometry, LineBasicMaterial, Group } from "three";
 
 function App() {
 
+  const instRef = useRef(null)
+
   function RoundedLineShape() {
 
     const { width, height, radius, color } = useControls({
@@ -99,43 +101,17 @@ function App() {
       step: 1,
     },
   });
-
-  function updateInstancesZ(reff, x, y, z) {
-    useFrame(() => {
-      reff.current.instanceMatrix.needsUpdate = true;
-      const instanceCount = reff.current?.instanceMatrix?.count;
-      for (let i = 0; i < instanceCount; i++) {
-        const instanceMatrix = new THREE.Matrix4().fromArray(
-          instRef.current.instanceMatrix.array,
-          i * 16
-        );
-        instanceMatrix.setPosition(new THREE.Vector3(x, y, z));
-        reff.current.instanceMatrix.setMatrixAt(i, instanceMatrix);
-      }
-    });
-  }
-
-  const instRef = useRef(null);
-  const zPos = 20;
-  const xPos = 20;
-  const yPos = 20;
-
-  console.log(instRef);
-  function updates() {
-    useEffect(() => {
-      // Call updateInstancesZ with your instancedMesh ref and the desired z position value
-      updateInstancesZ(instRef, xPos, yPos, zPos);
-    }, [instRef, xPos, yPos, zPos]);
-  }
+  
+  console.log(countOfFrames)
 
   return (
-    <Canvas camera={{ position: [90, 90, 100] }}>
+    <>
       <OrbitControls enableDamping />
       <color attach="background" args={[backgroundColorFrame]} />
       <ambientLight intensity={1} />
 
-      <Instances
-      >
+      <Instances>
+      
         <shapeGeometry args={[RoundedRect()]} />
         <meshStandardMaterial
           side={DoubleSide}
@@ -144,26 +120,21 @@ function App() {
           transparent={true}
           alphaMap={textureMap}
         />
-        <Instance scale={1} position={[0, 0, 10]} />
-        <Instance scale={1} position={[0, 0, 20]} />
-        <Instance scale={1} position={[0, 0, 30]} />
-        <Instance scale={1} position={[0, 0, 40]} />
-        </Instances>
-
         
-          <group position={[0, 0, 10]}>
+        {Array(countOfFrames).fill(0).map((frame, index) => ( 
+          <Instance scale={1} position={[0, 0, 10 + 10 * index ]} key={index} /> 
+        ))}
+
+      </Instances> 
+
+      {Array(countOfFrames).fill(0).map((frame, index) => ( 
+          <group position={[0, 0, 10 + 10 * index]} key={index}>
           <RoundedLineShape width={20} height={25} radius={5} color={'white'}  />
           </group>
-          <group position={[0, 0, 20]}>
-          <RoundedLineShape width={20} height={25} radius={5} color={'white'}  />
-          </group>
-          <group position={[0, 0, 30]}>
-          <RoundedLineShape width={20} height={25} radius={5} color={'white'}  />
-          </group>
-          <group position={[0, 0, 40]}>
-          <RoundedLineShape width={20} height={25} radius={5} color={'white'}  />
-          </group>
-    </Canvas>
+        ))}
+
+      
+          </>
   );
 }
 export default App;
