@@ -8,7 +8,7 @@ import './style.css'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     {/* Frame Generator Camera <Canvas camera={{ position: [90, 90, 100] }} > */}
-    <Canvas camera={{ position: [0, 10, 200] }} >
+    <Canvas camera={{ position: [0, 30, 200] }} >
       <Typography />
     </Canvas >
   </React.StrictMode>,
