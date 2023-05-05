@@ -11,7 +11,8 @@ import { LineGeometry } from "three-stdlib";
 import { Shape, ExtrudeBufferGeometry, LineBasicMaterial, Group } from "three";
 
 
-function App() {
+function FrameGenerator() {
+
 
   const instRef = useRef(null)
 
@@ -97,7 +98,7 @@ function App() {
     countOfFrames: {
       value: 1,
       min: 1,
-      max: 6,
+      max: 20,
       step: 1,
     },
   });
@@ -137,4 +138,4 @@ function App() {
           </>
   );
 }
-export default App;
+export default FrameGenerator;
