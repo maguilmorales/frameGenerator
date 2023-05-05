@@ -29,9 +29,10 @@ function Typography() {
     u_resolution: {
       value: new THREE.Vector2(window.innerWidth, window.innerHeight),
     },
-    u_color1: { value: new THREE.Color("#7C52FF") },
+    u_color1: { value: new THREE.Color("#9643FF") },
     u_color2: { value: new THREE.Color("#F9008E") },
     u_color3: { value: new THREE.Color("#FF7719") },
+    u_color4: { value: new THREE.Color("#9FFF90") },
     u_texture: { value: textureMap },
     u_textureWorld: { value: textureWorld },
     u_textureLogo: { value: textureLogo },

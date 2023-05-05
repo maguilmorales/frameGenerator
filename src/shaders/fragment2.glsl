@@ -1,7 +1,7 @@
 uniform float u_time;
 uniform vec2 u_resolution;
+uniform vec3 u_color4;
 uniform vec3 u_color1;
-uniform vec3 u_color3;
 varying vec2 vUv;
 
 float random (vec2 st) {
@@ -21,10 +21,10 @@ float noise (vec2 st) {
 
 void main() {
     vec2 st = vUv;
-    vec3 color = mix(u_color1, u_color3, st.x);
+    vec3 color = mix(u_color4, u_color1, st.x);
 
-    float noiseValue = noise(vec2(st.y + u_time * 1.5, 0.0));
-    color = mix(color, u_color1, noiseValue);
+    float noiseValue = noise(vec2(st.y + u_time * 0.5, 0.0));
+    color = mix(color, u_color4, noiseValue);
 
     gl_FragColor = vec4(color, 1.0);
 }

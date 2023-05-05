@@ -23,7 +23,7 @@ void main() {
     vec2 st = vUv;
     vec3 color = mix(u_color1, u_color2, st.x);
 
-    float noiseValue = noise(vec2(st.x + u_time * 1.5, 0.0));
+    float noiseValue = noise(vec2(st.x + u_time * 0.5, 0.0));
     color = mix(color, u_color1, noiseValue);
 
     gl_FragColor = vec4(color, 1.0);
