@@ -29,7 +29,7 @@ import vertexShader from "../shaders/vertex.glsl";
 import vertexShader2 from "../shaders/vertexPerlin.glsl";
 import { CylinderGeometry, DoubleSide } from "three";
 
-export const Typography = () => {
+export const AiCommunication = () => {
   const textureMap = useLoader(TextureLoader, "wb.jpg");
   const textureWorld = useLoader(TextureLoader, "dp-star.png");
   const textureLogo = useLoader(TextureLoader, "dp-logo.jpg");
@@ -87,7 +87,7 @@ export const Typography = () => {
     mesh.current.material[1].uniforms.u_time.value += delta;
     mesh.current.material[0].uniforms.u_time.value += delta;
     mesh.current.rotation.x +=
-      Math.sin(state.clock.elapsedTime * 2) * Math.PI * 0.0002;
+      Math.sin(state.clock.elapsedTime * 2) * Math.PI * 0.0006;
     mesh2.current.rotation.x +=
       Math.sin(state.clock.elapsedTime * 3) * Math.PI * 0.0009;
     mesh3.current.rotation.x +=
