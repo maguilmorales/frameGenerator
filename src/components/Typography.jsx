@@ -109,7 +109,7 @@ export const Typography = () => {
 
     const maxScale = 1.2;
     const minScale = 0.8;
-    const scaleSpeed = 0.002;
+    const scaleSpeed = 0.001;
    
 
     mesh.current.scale.x += scaleSpeed * direction;
