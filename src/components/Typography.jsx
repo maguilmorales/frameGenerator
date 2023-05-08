@@ -109,7 +109,7 @@ export const Typography = () => {
 
     const maxScale = 1.2;
     const minScale = 0.8;
-    const scaleSpeed = 0.004;
+    const scaleSpeed = 0.002;
    
 
     mesh.current.scale.x += scaleSpeed * direction;
@@ -148,7 +148,7 @@ export const Typography = () => {
     <>
       <OrbitControls enableDamping />
       <color attach="background" args={["#000000"]} />
-      <group position={[0, 10, 0]}>
+      <group position={[0, 20, 0]}>
         <mesh ref={mesh2} position={[0, 40, 0]}>
           <cylinderGeometry attach="geometry" args={[60, 60, 7, 60, 1]} />
 
@@ -187,7 +187,7 @@ export const Typography = () => {
           <shaderMaterial
             attach="material-2"
             uniforms={uniforms}
-            fragmentShader={fg}
+            fragmentShader={fgOrange}
             vertexShader={vertexShader}
           />
           <shaderMaterial
