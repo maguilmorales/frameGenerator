@@ -187,7 +187,7 @@ export const Typography = () => {
           <shaderMaterial
             attach="material-2"
             uniforms={uniforms}
-            fragmentShader={fgOrange}
+            fragmentShader={fgSquares2}
             vertexShader={vertexShader}
           />
           <shaderMaterial
