@@ -12,10 +12,14 @@ import fgAiSalesPurple from "../shaders/fg-text-aiSalesPurple.glsl";
 import fgAiSalesPink from "../shaders/fg-text-aiSalesPink.glsl";
 import fgGradientMap from "../shaders/fg-gradientMap.glsl";
 import fgGradientMapOrange from "../shaders/fg-gradientMapOrange.glsl";
+import fgGeometricShapes from "../shaders/fg-geometricShapes.glsl";
+import fgSquares from "../shaders/fg-squares.glsl";
+import fgBlob from "../shaders/fg-blob.glsl";
 
 import vertexShader from "../shaders/vertex.glsl";
-import { BackSide, CylinderGeometry, DoubleSide , Object3D} from "three";
+import vertexPerlin from "../shaders/vertexPerlin.glsl";
 
+import { BackSide, CylinderGeometry, DoubleSide, Object3D } from "three";
 
 export const AiSales = () => {
   const aiSalesPurple = useLoader(TextureLoader, "aiSalesPurple.jpg");
@@ -25,9 +29,12 @@ export const AiSales = () => {
   const dpLogo = useLoader(TextureLoader, "dp-logo.jpg");
   const gradientMap = useLoader(TextureLoader, "gradientMap.png");
   const gradientMapOrange = useLoader(TextureLoader, "gradientMapOrange.png");
+  const geometricShapes = useLoader(TextureLoader, "geometricShapes.png");
+  const squares = useLoader(TextureLoader, "galaxy.png");
 
   const uniforms = {
     u_time: { value: 0.0 },
+    u_intensity: { value: 0.3 },
     u_resolution: {
       value: new THREE.Vector2(window.innerWidth, window.innerHeight),
     },
@@ -42,6 +49,8 @@ export const AiSales = () => {
     u_textureLogo: { value: dpLogo },
     u_textureGradientMap: { value: gradientMap },
     u_textureGradientMapOrange: { value: gradientMapOrange },
+    u_textureGeometricShapes: { value: geometricShapes },
+    u_textureSquares: { value: squares },
   };
 
   const mesh = useRef(null);
@@ -54,8 +63,7 @@ export const AiSales = () => {
   const mesh8 = useRef(null);
   const mesh9 = useRef(null);
   const mesh10 = useRef(null);
-
-
+  const meshGeom = useRef(null);
 
   const arrayOfMeshes = [
     mesh,
@@ -68,37 +76,70 @@ export const AiSales = () => {
     mesh8,
     mesh9,
     mesh10,
-
-
   ];
+  let direction = 1;
 
-  useFrame(({ clock }, delta) => {
-    console.log('clock.elapsedTime', clock.elapsedTime)
+  useFrame(({ clock, state }, delta) => {
     const time = clock.getElapsedTime();
     const scale = 1 + Math.sin(clock.elapsedTime * 2) * 0.3;
-    
-   
+
     arrayOfMeshes.forEach((_mesh, i) => {
-      
       const powDelta = Math.pow(time, i / 10);
 
       _mesh.current.material.uniforms.u_time.value += delta;
-      if (time > 2) return
+      if (time > 2) return;
 
       _mesh.current.scale.set(powDelta, powDelta, powDelta);
-     
-
-
     });
 
     // Individual Meshes events
 
-    arrayOfMeshes[4].current.rotation.y += delta 
+    const maxScale = 1.2;
+    const minScale = 0.6;
+    const scaleSpeed = 0.005;
+  
+
+    arrayOfMeshes[4].current.rotation.x += Math.sin(clock.elapsedTime * 2) * Math.PI * 0.0006;
+    arrayOfMeshes[7].current.rotation.x += Math.sin(clock.elapsedTime * 1) * Math.PI * 0.0001;
+    arrayOfMeshes[9].current.rotation.x += Math.sin(clock.elapsedTime * 1) * Math.PI * 0.0002;
+    arrayOfMeshes[0].current.rotation.y += delta;
 
 
+        // Scale the sphere
+        arrayOfMeshes[0].current.scale.x += scaleSpeed * direction;
+        arrayOfMeshes[0].current.scale.y += scaleSpeed * direction;
+        arrayOfMeshes[0].current.scale.z += scaleSpeed * direction;
+
+    // Reverse direction if the sphere reaches max or min scale
+    if (arrayOfMeshes[0].current.scale.x > maxScale)  {
+      direction *= -1;
+    }
+    if (arrayOfMeshes[0].current.scale.x < minScale)  {
+      direction *= -1;
+    }
+
+
+    // const radius = 90;
+    // const numSpheres = 20;
+    // const sphereGeometry = new THREE.SphereGeometry(5, 32, 32);
+    // const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    // const sphereGroup = new THREE.Group();
+    // const powDelta = time;
+
+    // for (let i = 0; i < numSpheres; i++) {
+    //   const angle = (i / numSpheres) * Math.PI * 2;
+    //   const x = Math.cos(angle) * radius;
+    //   const y = Math.sin(angle) * radius;
+    //   const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    //   sphere.position.set(x, y, 0);
+    //   sphereGroup.add(sphere);
+    //   sphereGroup.rotation.set(-32,0,0);
+
+    // }
+
+    // scene.add(sphereGroup);
   });
 
- 
   return (
     <>
       <OrbitControls enableDamping />
@@ -112,10 +153,10 @@ export const AiSales = () => {
           castShadow
           receiveShadow
         >
-          <sphereGeometry attach="geometry" args={[10, 50, 50]} />
+          <icosahedronGeometry ref={meshGeom} args={[10, 20]} />
           <shaderMaterial
             uniforms={uniforms}
-            fragmentShader={fgGradientMap}
+            fragmentShader={fgBlob}
             vertexShader={vertexShader}
             shadowSide={BackSide}
             shadowMap={true} // Add this property
@@ -133,11 +174,11 @@ export const AiSales = () => {
           castShadow
           receiveShadow
         >
-          <cylinderGeometry args={[20, 20, 5, 60, 1, true]} />
+          <cylinderGeometry args={[20, 20, 2, 60, 1, true]} />
 
           <shaderMaterial
             uniforms={uniforms}
-            fragmentShader={fgAiSalesPurple}
+            fragmentShader={fgGeometricShapes}
             vertexShader={vertexShader}
             transparent={true}
             side={DoubleSide}
@@ -156,10 +197,7 @@ export const AiSales = () => {
           castShadow
           receiveShadow
         >
-          <cylinderGeometry
-            attach="geometry"
-            args={[30, 30, 10, 60, 1, true]}
-          />
+          <cylinderGeometry attach="geometry" args={[30, 30, 5, 60, 1, true]} />
 
           <shaderMaterial
             uniforms={uniforms}
@@ -182,14 +220,11 @@ export const AiSales = () => {
           castShadow
           receiveShadow
         >
-          <cylinderGeometry
-            attach="geometry"
-            args={[40, 40, 10, 60, 1, true]}
-          />
+          <cylinderGeometry attach="geometry" args={[40, 40, 5, 60, 1, true]} />
 
           <shaderMaterial
             uniforms={uniforms}
-            fragmentShader={fgGradientMap}
+            fragmentShader={fgGeometricShapes}
             vertexShader={vertexShader}
             side={DoubleSide}
             shadowSide={BackSide}
@@ -208,10 +243,7 @@ export const AiSales = () => {
           castShadow
           receiveShadow
         >
-          <cylinderGeometry
-            attach="geometry"
-            args={[50, 50, 10, 60, 1, true]}
-          />
+          <cylinderGeometry attach="geometry" args={[50, 50, 5, 60, 1, true]} />
 
           <shaderMaterial
             uniforms={uniforms}
@@ -236,12 +268,12 @@ export const AiSales = () => {
         >
           <cylinderGeometry
             attach="geometry"
-            args={[60, 60, 5, 60, 1, true]}
+            args={[60, 60, 5, 100, 1, true]}
           />
 
           <shaderMaterial
             uniforms={uniforms}
-            fragmentShader={fgGradientMap}
+            fragmentShader={fgSquares}
             vertexShader={vertexShader}
             transparent={true}
             side={DoubleSide}
@@ -262,7 +294,7 @@ export const AiSales = () => {
         >
           <cylinderGeometry
             attach="geometry"
-            args={[70, 70, 5, 60, 1, true]}
+            args={[70, 70, 5, 100, 1, true]}
           />
 
           <shaderMaterial
@@ -282,7 +314,7 @@ export const AiSales = () => {
         >
           <cylinderGeometry
             attach="geometry"
-            args={[80, 80, 10, 60, 1, true]}
+            args={[80, 80, 5, 100, 1, true]}
           />
 
           <shaderMaterial
@@ -303,12 +335,12 @@ export const AiSales = () => {
         >
           <cylinderGeometry
             attach="geometry"
-            args={[90, 90, 10, 60, 1, true]}
+            args={[90, 90, 10, 100, 1, true]}
           />
 
           <shaderMaterial
             uniforms={uniforms}
-            fragmentShader={fgGradientMap}
+            fragmentShader={fgGeometricShapes}
             vertexShader={vertexShader}
             transparent={true}
             side={DoubleSide}
@@ -324,18 +356,17 @@ export const AiSales = () => {
         >
           <cylinderGeometry
             attach="geometry"
-            args={[100, 100, 10, 60, 1, true]}
+            args={[100, 100, 5, 100, 1, true]}
           />
 
           <shaderMaterial
             uniforms={uniforms}
-            fragmentShader={fgAiSalesPink}
+            fragmentShader={fgGradientMap}
             vertexShader={vertexShader}
             transparent={true}
             side={DoubleSide}
           />
         </mesh>
-
       </group>
     </>
   );

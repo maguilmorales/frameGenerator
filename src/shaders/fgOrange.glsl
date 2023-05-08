@@ -20,7 +20,7 @@ float noise (vec2 st) {
 }
 void main() {
     vec2 st = vUv;
-    vec3 color = mix(u_color1, u_color3, st.x);
+    vec3 color = mix(u_color1, u_color4, st.x);
     float noiseValue = noise(vec2(st.x + u_time * 0.5, 1.0));
     float blend = smoothstep(0.01, 0.9, noiseValue);
     color = mix(color, u_color1, blend);
