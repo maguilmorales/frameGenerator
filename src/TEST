@@ -616,3 +616,483 @@ export const AiSales = () => {
     </>
   );
 };
+  // const meshTorus = useRef(null);
+  // const meshBox = useRef(null);
+  // const meshCircle = useRef(null);
+  // const meshCircle2 = useRef(null);
+  // const meshTorusKnot = useRef(null);
+  // const meshTorus2 = useRef(null);
+  // const meshTorus10 = useRef(null);
+  // const meshPoints4 = useRef(null);
+  // const meshCircle3 = useRef(null);
+  // const meshTorusKnot2 = useRef(null);
+  // const meshPoints3 = useRef(null);
+  // const meshPoints = useRef();
+  // const meshPoints2 = useRef();
+  // const meshPoints10 = useRef();
+  // const meshPoints20 = useRef();
+
+//   useFrame((state, delta) => {
+//     meshBox.current.material.uniforms.u_time.value += delta;
+//     meshBox.current.rotation.x += delta;
+//     meshBox.current.rotation.y += delta;
+//     meshBox.current.rotation.z += delta;
+//     meshTorusKnot.current.rotation.z += delta;
+//     meshTorusKnot2.current.rotation.z += delta;
+//     meshCircle.current.rotation.z += delta;
+//     meshCircle2.current.rotation.z += delta;
+//     meshCircle3.current.rotation.z += delta;
+//     meshPoints3.current.rotation.x += delta;
+//     meshPoints.current.rotation.x += delta;
+//     meshPoints.current.rotation.y += delta;
+//     meshPoints.current.rotation.z += delta;
+//     meshPoints2.current.rotation.x -= delta;
+//     meshPoints10.current.rotation.x -= delta;
+//     meshPoints10.current.rotation.y -= delta;
+//     meshPoints10.current.rotation.z -= delta;
+//     meshPoints2.current.rotation.y -= delta;
+//     meshPoints2.current.rotation.z -= delta;
+//     meshPoints4.current.rotation.z -= delta;
+//     meshTorus.current.rotation.x -= delta;
+//     meshTorus.current.rotation.y -= delta;
+//     meshTorus.current.rotation.z -= delta;
+//     meshTorus2.current.rotation.x -= delta;
+//     meshTorus2.current.rotation.y -= delta;
+//     meshTorus2.current.rotation.z -= delta;
+//     meshTorus10.current.rotation.z -= delta;
+//     meshTorus10.current.rotation.x -= delta;
+//     meshTorus10.current.rotation.y -= delta;
+//     meshPoints10.current.rotation.z -= delta;
+//     meshPoints20.current.rotation.z -= delta;
+//   });
+
+// const color = new THREE.Color('#9643FF')
+//   return (
+
+//     <>
+//       <OrbitControls enableDamping />
+//       <color attach="background" args={["#000000"]} />
+//       <ambientLight intensity={1} />
+//       <group position={[0, 10, 0]}>
+//       <mesh ref={meshCircle3} position={[-20, 0, 0]}>
+//       <circleGeometry args={[4, 50 ]} />
+//       <shaderMaterial
+//             uniforms={uniforms}
+//             fragmentShader={fgGradientMap}
+//             vertexShader={vertexShader}
+//           />
+//       </mesh>
+
+//       <mesh ref={meshTorusKnot2} position={[-10, 0, 0]}>
+//       <torusKnotGeometry args={[2, 0.8, 100, 100 ]} />
+//       <shaderMaterial
+//             uniforms={uniforms}
+//             fragmentShader={fgLogoCom}
+//             vertexShader={vertexShader}
+//           />
+//       </mesh>
+
+//       <points ref={meshPoints10} position={[10, 0, 0]}>
+//         <sphereGeometry args={[4, 30, 30]} />
+//         <pointsMaterial color={"#9FFF90"} size={0.1} />
+//       </points>
+
+//       <mesh ref={meshTorus10} position={[0, 0, 0]}>
+//       <torusGeometry args={[2, 1, 100, 100 ]} />
+//       <shaderMaterial
+//             uniforms={uniforms}
+//             fragmentShader={fgSmileyLinePink}
+//             vertexShader={vertexShader}
+//           />
+//       </mesh>
+
+//       <points ref={meshPoints4} position={[20, 0, 0]}>
+//         <sphereGeometry args={[2, 10, 30]} />
+//         <pointsMaterial color={"#9FFF90"} size={0.1} />
+//       </points>
+//       </group>
+//       <group position={[0, 0, 0]}>
+//       <mesh ref={meshCircle} position={[-20, 0, 0]}>
+//       <circleGeometry args={[4, 50 ]} />
+//       <shaderMaterial
+//             uniforms={uniforms}
+//             fragmentShader={fgGeometricShapesCom}
+//             vertexShader={vertexShader}
+//           />
+//       </mesh>
+
+//       <mesh ref={meshBox} position={[-10, 0, 0]}>
+//       <boxGeometry args={[4, 4, 4 ]} />
+//       <shaderMaterial
+//             uniforms={uniforms}
+//             fragmentShader={fgLogoCom}
+//             vertexShader={vertexShader}
+//           />
+//       </mesh>
+
+//       <points ref={meshPoints20} position={[0, 0, 0]}>
+//         <sphereGeometry args={[4, 30, 30]} />
+//         <pointsMaterial color={"#9643FF"} size={0.1} />
+//       </points>
+
+//       <mesh ref={meshTorus} position={[10, 0, 0]}>
+//       <torusGeometry args={[2, 1, 100, 100 ]} />
+//       <meshNormalMaterial />
+//       </mesh>
+
+//       <points ref={meshPoints2} position={[20, 0, 0]}>
+//         <sphereGeometry args={[4, 10, 30]} />
+//         <pointsMaterial color={"#ffffff"} size={0.1} />
+//       </points>
+//       </group>
+//       <group position={[0, 20, 0]}>
+//       <mesh ref={meshCircle} position={[-20, 0, 0]}>
+//       <circleGeometry args={[4, 50 ]} />
+//       <shaderMaterial
+//             uniforms={uniforms}
+//             fragmentShader={fgGeometricShapesCom}
+//             vertexShader={vertexShader}
+//           />
+//       </mesh>
+
+//       <mesh ref={meshBox} position={[-10, 0, 0]}>
+//       <boxGeometry args={[4, 4, 4 ]} />
+//       <shaderMaterial
+//             uniforms={uniforms}
+//             fragmentShader={fgLogoCom}
+//             vertexShader={vertexShader}
+//           />
+//       </mesh>
+
+//       <points ref={meshPoints} position={[0, 0, 0]}>
+//         <sphereGeometry args={[4, 30, 30]} />
+//         <pointsMaterial color={"#9643FF"} size={0.1} />
+//       </points>
+
+//       <mesh ref={meshTorus} position={[10, 0, 0]}>
+//       <torusGeometry args={[2, 1, 100, 100 ]} />
+//       <meshNormalMaterial />
+//       </mesh>
+
+//       <points ref={meshPoints2} position={[20, 0, 0]}>
+//         <sphereGeometry args={[4, 10, 30]} />
+//         <pointsMaterial color={"#ffffff"} size={0.1} />
+//       </points>
+//       </group>
+//       <group position={[0, -10, 0]}>
+//       <mesh ref={meshCircle} position={[-20, 0, 0]}>
+//       <circleGeometry args={[4, 50 ]} />
+//       <shaderMaterial
+//             uniforms={uniforms}
+//             fragmentShader={fgGeometricShapesCom}
+//             vertexShader={vertexShader}
+//           />
+//       </mesh>
+
+//       <mesh ref={meshBox} position={[-10, 0, 0]}>
+//       <boxGeometry args={[4, 4, 4 ]} />
+//       <shaderMaterial
+//             uniforms={uniforms}
+//             fragmentShader={fgLogoCom}
+//             vertexShader={vertexShader}
+//           />
+//       </mesh>
+
+//       <points ref={meshPoints} position={[0, 0, 0]}>
+//         <sphereGeometry args={[2, 30, 30]} />
+//         <pointsMaterial color={"#F9008E"} size={0.1} />
+//       </points>
+
+//       <mesh ref={meshTorus} position={[10, 0, 0]}>
+//       <torusGeometry args={[2, 1, 100, 100 ]} />
+//       <meshNormalMaterial />
+//       </mesh>
+
+//       <points ref={meshPoints2} position={[20, 0, 0]}>
+//         <sphereGeometry args={[4, 10, 30]} />
+//         <pointsMaterial color={"#ffffff"} size={0.1} />
+//       </points>
+//       </group>
+//       <group position={[0, -20, 0]}>
+//       <mesh ref={meshCircle2} position={[-20, 0, 0]}>
+//       <circleGeometry args={[4, 50 ]} />
+//       <shaderMaterial
+//             uniforms={uniforms}
+//             fragmentShader={fgGradientMap}
+//             vertexShader={vertexShader}
+//           />
+//       </mesh>
+
+//       <mesh ref={meshTorusKnot} position={[-10, 0, 0]}>
+//       <torusKnotGeometry args={[2, 0.8, 100, 100 ]} />
+//       <shaderMaterial
+//             uniforms={uniforms}
+//             fragmentShader={fgLogoCom}
+//             vertexShader={vertexShader}
+//           />
+//       </mesh>
+
+//       <points ref={meshPoints3} position={[10, 0, 0]}>
+//         <sphereGeometry args={[4, 30, 30]} />
+//         <pointsMaterial color={"#FF7719"} size={0.1} />
+//       </points>
+
+//       <mesh ref={meshTorus2} position={[0, 0, 0]}>
+//       <torusGeometry args={[2, 1, 100, 100 ]} />
+//       <shaderMaterial
+//             uniforms={uniforms}
+//             fragmentShader={fgSmileyLinePink}
+//             vertexShader={vertexShader}
+//           />
+//       </mesh>
+
+//       <points ref={meshPoints4} position={[20, 0, 0]}>
+//         <sphereGeometry args={[2, 10, 30]} />
+//         <pointsMaterial color={"#9FFF90"} size={0.1} />
+//       </points>
+//       </group>
+
+//     </>
+//   );
+// };
+
+
+ // const meshTorus = useRef(null);
+  // const meshBox = useRef(null);
+  // const meshCircle = useRef(null);
+  // const meshCircle2 = useRef(null);
+  // const meshTorusKnot = useRef(null);
+  // const meshTorus2 = useRef(null);
+  // const meshTorus10 = useRef(null);
+  // const meshPoints4 = useRef(null);
+  // const meshCircle3 = useRef(null);
+  // const meshTorusKnot2 = useRef(null);
+  // const meshPoints3 = useRef(null);
+  // const meshPoints = useRef();
+  // const meshPoints2 = useRef();
+  // const meshPoints10 = useRef();
+  // const meshPoints20 = useRef();
+
+  //   useFrame((state, delta) => {
+  //     meshBox.current.material.uniforms.u_time.value += delta;
+  //     meshBox.current.rotation.x += delta;
+  //     meshBox.current.rotation.y += delta;
+  //     meshBox.current.rotation.z += delta;
+  //     meshTorusKnot.current.rotation.z += delta;
+  //     meshTorusKnot2.current.rotation.z += delta;
+  //     meshCircle.current.rotation.z += delta;
+  //     meshCircle2.current.rotation.z += delta;
+  //     meshCircle3.current.rotation.z += delta;
+  //     meshPoints3.current.rotation.x += delta;
+  //     meshPoints.current.rotation.x += delta;
+  //     meshPoints.current.rotation.y += delta;
+  //     meshPoints.current.rotation.z += delta;
+  //     meshPoints2.current.rotation.x -= delta;
+  //     meshPoints10.current.rotation.x -= delta;
+  //     meshPoints10.current.rotation.y -= delta;
+  //     meshPoints10.current.rotation.z -= delta;
+  //     meshPoints2.current.rotation.y -= delta;
+  //     meshPoints2.current.rotation.z -= delta;
+  //     meshPoints4.current.rotation.z -= delta;
+  //     meshTorus.current.rotation.x -= delta;
+  //     meshTorus.current.rotation.y -= delta;
+  //     meshTorus.current.rotation.z -= delta;
+  //     meshTorus2.current.rotation.x -= delta;
+  //     meshTorus2.current.rotation.y -= delta;
+  //     meshTorus2.current.rotation.z -= delta;
+  //     meshTorus10.current.rotation.z -= delta;
+  //     meshTorus10.current.rotation.x -= delta;
+  //     meshTorus10.current.rotation.y -= delta;
+  //     meshPoints10.current.rotation.z -= delta;
+  //     meshPoints20.current.rotation.z -= delta;
+  //   });
+
+  // const color = new THREE.Color('#9643FF')
+  //   return (
+
+  //     <>
+  //       <OrbitControls enableDamping />
+  //       <color attach="background" args={["#000000"]} />
+  //       <ambientLight intensity={1} />
+  //       <group position={[0, 10, 0]}>
+  //       <mesh ref={meshCircle3} position={[-20, 0, 0]}>
+  //       <circleGeometry args={[4, 50 ]} />
+  //       <shaderMaterial
+  //             uniforms={uniforms}
+  //             fragmentShader={fgGradientMap}
+  //             vertexShader={vertexShader}
+  //           />
+  //       </mesh>
+
+  //       <mesh ref={meshTorusKnot2} position={[-10, 0, 0]}>
+  //       <torusKnotGeometry args={[2, 0.8, 100, 100 ]} />
+  //       <shaderMaterial
+  //             uniforms={uniforms}
+  //             fragmentShader={fgLogoCom}
+  //             vertexShader={vertexShader}
+  //           />
+  //       </mesh>
+
+  //       <points ref={meshPoints10} position={[10, 0, 0]}>
+  //         <sphereGeometry args={[4, 30, 30]} />
+  //         <pointsMaterial color={"#9FFF90"} size={0.1} />
+  //       </points>
+
+  //       <mesh ref={meshTorus10} position={[0, 0, 0]}>
+  //       <torusGeometry args={[2, 1, 100, 100 ]} />
+  //       <shaderMaterial
+  //             uniforms={uniforms}
+  //             fragmentShader={fgSmileyLinePink}
+  //             vertexShader={vertexShader}
+  //           />
+  //       </mesh>
+
+  //       <points ref={meshPoints4} position={[20, 0, 0]}>
+  //         <sphereGeometry args={[2, 10, 30]} />
+  //         <pointsMaterial color={"#9FFF90"} size={0.1} />
+  //       </points>
+  //       </group>
+  //       <group position={[0, 0, 0]}>
+  //       <mesh ref={meshCircle} position={[-20, 0, 0]}>
+  //       <circleGeometry args={[4, 50 ]} />
+  //       <shaderMaterial
+  //             uniforms={uniforms}
+  //             fragmentShader={fgGeometricShapesCom}
+  //             vertexShader={vertexShader}
+  //           />
+  //       </mesh>
+
+  //       <mesh ref={meshBox} position={[-10, 0, 0]}>
+  //       <boxGeometry args={[4, 4, 4 ]} />
+  //       <shaderMaterial
+  //             uniforms={uniforms}
+  //             fragmentShader={fgLogoCom}
+  //             vertexShader={vertexShader}
+  //           />
+  //       </mesh>
+
+  //       <points ref={meshPoints20} position={[0, 0, 0]}>
+  //         <sphereGeometry args={[4, 30, 30]} />
+  //         <pointsMaterial color={"#9643FF"} size={0.1} />
+  //       </points>
+
+  //       <mesh ref={meshTorus} position={[10, 0, 0]}>
+  //       <torusGeometry args={[2, 1, 100, 100 ]} />
+  //       <meshNormalMaterial />
+  //       </mesh>
+
+  //       <points ref={meshPoints2} position={[20, 0, 0]}>
+  //         <sphereGeometry args={[4, 10, 30]} />
+  //         <pointsMaterial color={"#ffffff"} size={0.1} />
+  //       </points>
+  //       </group>
+  //       <group position={[0, 20, 0]}>
+  //       <mesh ref={meshCircle} position={[-20, 0, 0]}>
+  //       <circleGeometry args={[4, 50 ]} />
+  //       <shaderMaterial
+  //             uniforms={uniforms}
+  //             fragmentShader={fgGeometricShapesCom}
+  //             vertexShader={vertexShader}
+  //           />
+  //       </mesh>
+
+  //       <mesh ref={meshBox} position={[-10, 0, 0]}>
+  //       <boxGeometry args={[4, 4, 4 ]} />
+  //       <shaderMaterial
+  //             uniforms={uniforms}
+  //             fragmentShader={fgLogoCom}
+  //             vertexShader={vertexShader}
+  //           />
+  //       </mesh>
+
+  //       <points ref={meshPoints} position={[0, 0, 0]}>
+  //         <sphereGeometry args={[4, 30, 30]} />
+  //         <pointsMaterial color={"#9643FF"} size={0.1} />
+  //       </points>
+
+  //       <mesh ref={meshTorus} position={[10, 0, 0]}>
+  //       <torusGeometry args={[2, 1, 100, 100 ]} />
+  //       <meshNormalMaterial />
+  //       </mesh>
+
+  //       <points ref={meshPoints2} position={[20, 0, 0]}>
+  //         <sphereGeometry args={[4, 10, 30]} />
+  //         <pointsMaterial color={"#ffffff"} size={0.1} />
+  //       </points>
+  //       </group>
+  //       <group position={[0, -10, 0]}>
+  //       <mesh ref={meshCircle} position={[-20, 0, 0]}>
+  //       <circleGeometry args={[4, 50 ]} />
+  //       <shaderMaterial
+  //             uniforms={uniforms}
+  //             fragmentShader={fgGeometricShapesCom}
+  //             vertexShader={vertexShader}
+  //           />
+  //       </mesh>
+
+  //       <mesh ref={meshBox} position={[-10, 0, 0]}>
+  //       <boxGeometry args={[4, 4, 4 ]} />
+  //       <shaderMaterial
+  //             uniforms={uniforms}
+  //             fragmentShader={fgLogoCom}
+  //             vertexShader={vertexShader}
+  //           />
+  //       </mesh>
+
+  //       <points ref={meshPoints} position={[0, 0, 0]}>
+  //         <sphereGeometry args={[2, 30, 30]} />
+  //         <pointsMaterial color={"#F9008E"} size={0.1} />
+  //       </points>
+
+  //       <mesh ref={meshTorus} position={[10, 0, 0]}>
+  //       <torusGeometry args={[2, 1, 100, 100 ]} />
+  //       <meshNormalMaterial />
+  //       </mesh>
+
+  //       <points ref={meshPoints2} position={[20, 0, 0]}>
+  //         <sphereGeometry args={[4, 10, 30]} />
+  //         <pointsMaterial color={"#ffffff"} size={0.1} />
+  //       </points>
+  //       </group>
+  //       <group position={[0, -20, 0]}>
+  //       <mesh ref={meshCircle2} position={[-20, 0, 0]}>
+  //       <circleGeometry args={[4, 50 ]} />
+  //       <shaderMaterial
+  //             uniforms={uniforms}
+  //             fragmentShader={fgGradientMap}
+  //             vertexShader={vertexShader}
+  //           />
+  //       </mesh>
+
+  //       <mesh ref={meshTorusKnot} position={[-10, 0, 0]}>
+  //       <torusKnotGeometry args={[2, 0.8, 100, 100 ]} />
+  //       <shaderMaterial
+  //             uniforms={uniforms}
+  //             fragmentShader={fgLogoCom}
+  //             vertexShader={vertexShader}
+  //           />
+  //       </mesh>
+
+  //       <points ref={meshPoints3} position={[10, 0, 0]}>
+  //         <sphereGeometry args={[4, 30, 30]} />
+  //         <pointsMaterial color={"#FF7719"} size={0.1} />
+  //       </points>
+
+  //       <mesh ref={meshTorus2} position={[0, 0, 0]}>
+  //       <torusGeometry args={[2, 1, 100, 100 ]} />
+  //       <shaderMaterial
+  //             uniforms={uniforms}
+  //             fragmentShader={fgSmileyLinePink}
+  //             vertexShader={vertexShader}
+  //           />
+  //       </mesh>
+
+  //       <points ref={meshPoints4} position={[20, 0, 0]}>
+  //         <sphereGeometry args={[2, 10, 30]} />
+  //         <pointsMaterial color={"#9FFF90"} size={0.1} />
+  //       </points>
+  //       </group>
+
+  //     </>
+  //   );
+  // };

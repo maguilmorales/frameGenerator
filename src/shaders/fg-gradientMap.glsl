@@ -7,7 +7,7 @@ void main() {
 
   vec2 uv = vUv;
   vec2 repeat = vec2(1.0, -1.0);
-  uv = fract(uv * repeat + vec2(time*0.1, 0.0));
+  uv = fract(uv * repeat);
   vec4 color = texture2D(u_textureGradientMap, uv);
   
   gl_FragColor = color;
