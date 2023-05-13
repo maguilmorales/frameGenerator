@@ -23,7 +23,8 @@
     "react-router-dom": "^6.11.1",
     "sort-by": "^1.2.0",
     "three": "^0.152.2",
-    "three-stdlib": "^2.21.10"
+    "three-stdlib": "^2.21.10",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",

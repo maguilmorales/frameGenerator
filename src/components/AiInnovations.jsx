@@ -439,6 +439,8 @@ export const AiInnovations = () => {
 
     return <primitive object={instancedMesh} />;
   };
+
+  
   return (
     <>
       <ambientLight intensity={0.8} />
