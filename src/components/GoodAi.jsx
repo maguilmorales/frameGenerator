@@ -112,7 +112,7 @@ const Geometries = () => {
       uIorB: { value: 1.0 },
       uIorP: { value: 1.0 },
       uRefractPower: {
-        value: 0.2,
+        value: 0.1,
       },
       uChromaticAberration: {
         value: 1.0,
@@ -364,10 +364,23 @@ const Particles = () => {
   };
 
 export const GoodAi = () => {
+    const backgroundGroup = useRef();
+    const columns = range(-7.5, 7.5, 2.5);
+    const rows = range(-7.5, 7.5, 2.5);
   return (
     <>
     <color attach="background" args={["#000"]} />
       <ambientLight intensity={1} />
+      {/* <group ref={backgroundGroup}>
+        {columns.map((col, i) =>
+          rows.map((row, j) => (
+            <mesh position={[col, row, -4]}>
+              <dodecahedronGeometry args={[0.4, 0]} />
+              <meshStandardMaterial color="white" />
+            </mesh>
+          ))
+        )}
+      </group> */}
       <Text
         font={"/Archivo-Bold.ttf"}
         weight={"bold"}
@@ -381,7 +394,7 @@ export const GoodAi = () => {
       </Text>
       {/* <Text
         font={"/Archivo-Regular.ttf"}
-        color={"#7C52FF"}
+        color={"white"}
         fontSize={0.7}
         position={[0, -5, -3]}
         lineHeight= {1.3}
@@ -390,6 +403,7 @@ export const GoodAi = () => {
         {`Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nPellentesque luctus, risus nec volutpat efficitur, arcu arcu vestibulum ligula\nnec maximus magna enim sed ligula.`}
       
       </Text> */}
+
 
       <Geometries />
       {/* <mesh>
