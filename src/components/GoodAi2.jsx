@@ -9,7 +9,8 @@ import {
   Instances
 
 } from "@react-three/drei";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { TextureLoader } from "three/src/loaders/TextureLoader";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { Leva, folder, useControls } from "leva";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
@@ -26,6 +27,8 @@ const range = (start, end, step = 1) => {
     }
     return output;
   };
+
+
 
 // position={[-0.2, 0.2, 0]} rotation={[0, 0, -2.8]}>
 
@@ -409,10 +412,54 @@ const Geometries = ({ position, rotation, radius }) => {
   );
 };
 
+const Particles = () => {
+    const groupRef = useRef();
+  
+    useFrame((state, delta) => {
+      const group = groupRef.current;
+      group.rotation.y += delta * 0.2;
+    });
+  
+    const createParticle = (index) => {
+      const geometry = new THREE.SphereGeometry(0.1, 10, 10);
+      const material = new THREE.MeshStandardMaterial({ color: 'hotpink' });
+      const particle = new THREE.Mesh(geometry, material);
+      particle.position.set(
+        Math.random() - 0.5,
+        Math.random() - 0.5,
+        Math.random() - 0.5
+      ).normalize();
+      particle.position.multiplyScalar(20 + Math.random());
+      particle.rotation.set(
+        Math.random() * 2,
+        Math.random() * 2,
+        Math.random() * 2
+      );
+  
+      return (
+        <mesh
+          key={index}
+          geometry={particle.geometry}
+          material={particle.material}
+          position={particle.position}
+          rotation={particle.rotation}
+        />
+      );
+    };
+  
+    const particleCount = 500;
+    const particles = Array.from(Array(particleCount).keys()).map((index) =>
+      createParticle(index)
+    );
+  
+    return <group ref={groupRef}>{particles}</group>;
+  };
 export const GoodAi2 = () => {
     const backgroundGroup = useRef();
     const columns = range(-15.5, 20.5, 5.5);
     const rows = range(-15.5, 20.5, 5.5);
+
+const galaxy = useLoader(TextureLoader, "texture.jpg");
 
   return (
     <>
@@ -420,7 +467,7 @@ export const GoodAi2 = () => {
       <ambientLight intensity={1} />
 
 
-            <group ref={backgroundGroup}>
+            {/* <group ref={backgroundGroup}>
         {columns.map((col, i) =>
           rows.map((row, j) => (
             <mesh position={[col, row, -4]}>
@@ -429,7 +476,9 @@ export const GoodAi2 = () => {
             </mesh>
           ))
         )}
-      </group>
+      </group> */}
+
+<Particles/>
 
       <Geometries radius={2} />
       <Cylinder position={[-0.2, 0.2, 0]} rotation={[0, 0, -2.8]} />
@@ -439,6 +488,12 @@ export const GoodAi2 = () => {
 
       <Geometries position={[5, 0, 0]} radius={1.5} />
       <Cylinder position={[5, 0.2, 0]} rotation={[0, 0, -3.5]} />
+
+
+<mesh position={[0, 0, -10]}>
+    <planeGeometry args={[30,20]}/>
+    <meshStandardMaterial map={galaxy}/>
+</mesh>
 
         {/* <Text
           font={"/Archivo-Bold.ttf"}
