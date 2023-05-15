@@ -490,10 +490,10 @@ const galaxy = useLoader(TextureLoader, "texture.jpg");
       <Cylinder position={[5, 0.2, 0]} rotation={[0, 0, -3.5]} />
 
 
-<mesh position={[0, 0, -10]}>
+{/* <mesh position={[0, 0, -10]}>
     <planeGeometry args={[30,20]}/>
     <meshStandardMaterial map={galaxy}/>
-</mesh>
+</mesh> */}
 
         {/* <Text
           font={"/Archivo-Bold.ttf"}
