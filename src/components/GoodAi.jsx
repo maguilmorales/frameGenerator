@@ -378,12 +378,12 @@ const CustomGeometryParticles = (props) => {
         varying float vDistance;
         
         void main() {
-          vec3 color = vec3(0.34, 0.53, 0.96);
+          vec3 color = vec3(1.0, 0.0, 1.0); // Bright Pink
           float strength = distance(gl_PointCoord, vec2(0.5));
           strength = 1.0 - strength;
           strength = pow(strength, 4.0);
         
-          color = mix(color, vec3(0.57, 0.20, 0.85), vDistance * 0.5);
+          color = mix(color, vec3(0.7, 0.0, 1.0), vDistance * 0.9); // Purple
           color = mix(vec3(0.0), color, strength);
           gl_FragColor = vec4(color, strength);
         }
