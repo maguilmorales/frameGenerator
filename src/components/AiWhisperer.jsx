@@ -431,8 +431,8 @@ export const AiWhisperer = () => {
         color={"white"}
         anchorX="center"
         anchorY="middle"
-        fontSize={0.1}
-        position={[-1.5, 0, -3]}
+        fontSize={0.05}
+        position={[-0.8, 0, 0]}
       >
         The Rise of the AI Whisperer
       </Text>
