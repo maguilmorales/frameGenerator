@@ -85,7 +85,7 @@ const Geometries = () => {
       iorB: { min: 1.0, max: 2.333, step: 0.001, value: 1.22 },
       iorP: { min: 1.0, max: 2.333, step: 0.001, value: 1.22 },
     }),
-    saturation: { value: 1.0, min: 1, max: 1.25, step: 0.01 },
+    saturation: { value: 1.1, min: 1, max: 1.25, step: 0.01 },
     chromaticAberration: {
       value: 0.07,
       min: 0,
@@ -112,12 +112,12 @@ const Geometries = () => {
       uIorB: { value: 1.0 },
       uIorP: { value: 1.0 },
       uRefractPower: {
-        value: 0.1,
+        value: 0.5,
       },
       uChromaticAberration: {
-        value: 1.0,
+        value: 0.6,
       },
-      uSaturation: { value: 1.0 },
+      uSaturation: { value: 1.1 },
       uShininess: { value: 40.0 },
       uDiffuseness: { value: 0.2 },
       uFresnelPower: { value: 8.0 },
@@ -182,7 +182,7 @@ const Geometries = () => {
   return (
     <>
       <mesh ref={mesh}>
-        <dodecahedronGeometry args={[3, 0]} />
+        <icosahedronGeometry args={[0.2, 0]} />
         <shaderMaterial
           key={uuidv4()}
           vertexShader={`
@@ -320,48 +320,153 @@ const Geometries = () => {
   );
 };
 
-const Particles = () => {
-    const groupRef = useRef();
-  
-    useFrame((state, delta) => {
-      const group = groupRef.current;
-      group.rotation.y += delta * 0.2;
-    });
-  
-    const createParticle = (index) => {
-      const geometry = new THREE.TetrahedronGeometry(0.3, 0);
-      const material = new THREE.MeshNormalMaterial();
-      const particle = new THREE.Mesh(geometry, material);
-      particle.position.set(
-        Math.random() - 0.5,
-        Math.random() - 0.5,
-        Math.random() - 0.5
-      ).normalize();
-      particle.position.multiplyScalar(20 + Math.random());
-      particle.rotation.set(
-        Math.random() * 2,
-        Math.random() * 2,
-        Math.random() * 2
-      );
-  
-      return (
-        <mesh
-          key={index}
-          geometry={particle.geometry}
-          material={particle.material}
-          position={particle.position}
-          rotation={particle.rotation}
+const CustomGeometryParticles = (props) => {
+  const { count } = props;
+  const radius = 2;
+
+  // This reference gives us direct access to our points
+  const points = useRef();
+
+  // Generate our positions attributes array
+  const particlesPosition = useMemo(() => {
+    const positions = new Float32Array(count * 3);
+    
+    for (let i = 0; i < count; i++) {
+      const distance = Math.sqrt(Math.random()) * radius;
+      const theta = THREE.MathUtils.randFloatSpread(360); 
+      const phi = THREE.MathUtils.randFloatSpread(360); 
+
+      let x = distance * Math.sin(theta) * Math.cos(phi)
+      let y = distance * Math.sin(theta) * Math.sin(phi);
+      let z = distance * Math.cos(theta);
+
+      positions.set([x, y, z], i * 3);
+    }
+    
+    return positions;
+  }, [count]);
+
+  const uniforms = useMemo(() => ({
+    uTime: {
+      value: 0.0
+    },
+    uRadius: {
+      value: radius
+    }
+  }), [])
+
+  useFrame((state) => {
+    const { clock } = state;
+
+    points.current.material.uniforms.uTime.value = clock.elapsedTime;
+  });
+
+  return (
+    <points ref={points}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={particlesPosition.length / 3}
+          array={particlesPosition}
+          itemSize={3}
         />
-      );
-    };
+      </bufferGeometry>
+      <shaderMaterial
+        depthWrite={false}
+        fragmentShader={`
+        void main() {
+          float radius = 0.5;
+          vec2 coord = gl_PointCoord - vec2(0.5);
+          float distance = length(coord);
+        
+          if (distance > radius) {
+            discard;
+          }
+        
+          gl_FragColor = vec4(0.74, 0.23, 0.96, 1.0);
+        }
+        `}
+        vertexShader={`
+        uniform float uTime;
+        uniform float uRadius;
+        
+        // Source: https://github.com/dmnsgn/glsl-rotate/blob/main/rotation-3d-y.glsl.js
+        mat3 rotation3dY(float angle) {
+          float s = sin(angle);
+          float c = cos(angle);
+          return mat3(
+            c, 0.0, -s,
+            0.0, 1.0, 0.0,
+            s, 0.0, c
+          );
+        }
+        
+        
+        void main() {
+          float distanceFactor = pow(uRadius - distance(position, vec3(0.0)), 1.5);
+          float size = distanceFactor * 1.5 + 3.0;
+          vec3 particlePosition = position * rotation3dY(uTime * 0.3 * distanceFactor);
+        
+          vec4 modelPosition = modelMatrix * vec4(particlePosition, 1.0);
+          vec4 viewPosition = viewMatrix * modelPosition;
+          vec4 projectedPosition = projectionMatrix * viewPosition;
+        
+          gl_Position = projectedPosition;
+        
+          gl_PointSize = size;
+          // Size attenuation;
+          gl_PointSize *= (1.0 / - viewPosition.z);
+        }
+        
+        `}
+        uniforms={uniforms}
+      />
+    </points>
+  );
+};
+
+// const Particles = () => {
+//     const groupRef = useRef();
   
-    const particleCount = 200;
-    const particles = Array.from(Array(particleCount).keys()).map((index) =>
-      createParticle(index)
-    );
+//     useFrame((state, delta) => {
+//       const group = groupRef.current;
+//       group.rotation.y += delta * 0.2;
+//     });
   
-    return <group ref={groupRef}>{particles}</group>;
-  };
+//     const createParticle = (index) => {
+//       const geometry = new THREE.TetrahedronGeometry(0.05, 0);
+//       const material = new THREE.MeshNormalMaterial();
+//       const particle = new THREE.Mesh(geometry, material);
+//       particle.position.set(
+//         Math.random() - 0.5,
+//         Math.random() - 0.5,
+//         Math.random() - 0.5
+//       ).normalize();
+//       particle.position.multiplyScalar(1.0 + Math.random());
+//       particle.rotation.set(
+//         Math.random() * 2,
+//         Math.random() * 2,
+//         Math.random() * 2
+//       );
+  
+//       return (
+//         <mesh
+//           key={index}
+//           geometry={particle.geometry}
+//           material={particle.material}
+//           position={particle.position}
+//           rotation={particle.rotation}
+//         />
+//       );
+//     };
+  
+//     const particleCount = 100;
+//     const particles = Array.from(Array(particleCount).keys()).map((index) =>
+//       createParticle(index)
+//     );
+  
+//     return <group ref={groupRef}>{particles}</group>;
+//   };
 
 export const GoodAi = () => {
     const backgroundGroup = useRef();
@@ -381,14 +486,15 @@ export const GoodAi = () => {
           ))
         )}
       </group> */}
+      <CustomGeometryParticles count={4000} shape="sphere"/>
       <Text
         font={"/Archivo-Bold.ttf"}
         weight={"bold"}
         color={"white"}
         anchorX="center"
         anchorY="middle"
-        fontSize={3.5}
-        position={[0, 0, -3]}
+        fontSize={0.05}
+        position={[0.8, 0, 0]}
       >
         The Good Ai
       </Text>
@@ -410,7 +516,7 @@ export const GoodAi = () => {
         <circleGeometry args={[3,3]}/>
         <meshStandardMaterial color={'#7C52FF'}/>
       </mesh> */}
-      <Particles />
+ 
       {/* <mesh position={[0, 0, -150]}>
         <planeGeometry args={[500, 60]} />
         <meshStandardMaterial color={"#7C52FF"} />
