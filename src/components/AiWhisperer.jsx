@@ -438,7 +438,7 @@ export const AiWhisperer = () => {
       </Text>
       <CustomGeometryParticles count={4000} />
       <Geometries/>
-      <OrbitControls enableDamping/>
+
     </>
   );
 };
