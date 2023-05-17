@@ -7,6 +7,7 @@ import { AiCustomersPage } from "../pages/AiCustomersPage";
 import { GoodAiPage } from "../pages/GoodAiPage";
 import { GoodAi2Page } from "../pages/GoodAi2Page";
 import { GlassFramesPage } from "../pages/GlassFramesPage";
+import { AiWhispererPage } from "../pages/AiWhispererPage";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
   {
     path: "/glassframes",
     element: <GlassFramesPage />
+  },
+  {
+    path: "/aiwhisperer",
+    element: <AiWhispererPage />
   }
 ]);
 

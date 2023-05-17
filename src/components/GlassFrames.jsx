@@ -23,29 +23,34 @@ function RoundedRect() {
   const roundedRectShape = new THREE.Shape();
   const x = -width / 2;
   const y = -height / 2;
-  roundedRectShape.moveTo(x + radius, y);
+  
+  const curveSegments = 50; // Increase the number of curve segments
+
+  const curveX = x + radius;
+  const curveY = y + radius;
+  
+  roundedRectShape.moveTo(curveX, y);
+
   roundedRectShape.lineTo(x + width - radius, y);
-  roundedRectShape.quadraticCurveTo(x + width, y, x + width, y + radius);
+  roundedRectShape.quadraticCurveTo(x + width, y, x + width, curveY);
+
   roundedRectShape.lineTo(x + width, y + height - radius);
-  roundedRectShape.quadraticCurveTo(
-    x + width,
-    y + height,
-    x + width - radius,
-    y + height
-  );
-  roundedRectShape.lineTo(x + radius, y + height);
+  roundedRectShape.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+
+  roundedRectShape.lineTo(curveX, y + height);
   roundedRectShape.quadraticCurveTo(x, y + height, x, y + height - radius);
-  roundedRectShape.lineTo(x, y + radius);
-  roundedRectShape.quadraticCurveTo(x, y, x + radius, y);
+
+  roundedRectShape.lineTo(x, curveY);
+  roundedRectShape.quadraticCurveTo(x, y, curveX, y);
 
   // Extrude the shape with bevels
   const extrudeSettings = {
     depth: 0.2,
     bevelEnabled: true,
     bevelSegments: 100,
-    steps: 100,
+    steps: 1,
     bevelSize: 1,
-    bevelThickness: 0.2,
+    bevelThickness: 0.1,
   };
   const extrudeGeometry = new THREE.ExtrudeGeometry(
     roundedRectShape,
