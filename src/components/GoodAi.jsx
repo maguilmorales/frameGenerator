@@ -372,23 +372,27 @@ const CustomGeometryParticles = (props) => {
         />
       </bufferGeometry>
       <shaderMaterial
+        blending={THREE.AdditiveBlending}
         depthWrite={false}
         fragmentShader={`
+        varying float vDistance;
+        
         void main() {
-          float radius = 0.5;
-          vec2 coord = gl_PointCoord - vec2(0.5);
-          float distance = length(coord);
+          vec3 color = vec3(0.34, 0.53, 0.96);
+          float strength = distance(gl_PointCoord, vec2(0.5));
+          strength = 1.0 - strength;
+          strength = pow(strength, 3.0);
         
-          if (distance > radius) {
-            discard;
-          }
-        
-          gl_FragColor = vec4(0.74, 0.23, 0.96, 1.0);
+          color = mix(color, vec3(0.54, 0.23, 0.96), vDistance * 0.5);
+          color = mix(vec3(0.0), color, strength);
+          gl_FragColor = vec4(color, strength);
         }
         `}
         vertexShader={`
         uniform float uTime;
         uniform float uRadius;
+        
+        varying float vDistance;
         
         // Source: https://github.com/dmnsgn/glsl-rotate/blob/main/rotation-3d-y.glsl.js
         mat3 rotation3dY(float angle) {
@@ -404,8 +408,10 @@ const CustomGeometryParticles = (props) => {
         
         void main() {
           float distanceFactor = pow(uRadius - distance(position, vec3(0.0)), 1.5);
-          float size = distanceFactor * 1.5 + 3.0;
+          float size = distanceFactor * 10.0 + 10.0;
           vec3 particlePosition = position * rotation3dY(uTime * 0.3 * distanceFactor);
+        
+          vDistance = distanceFactor;
         
           vec4 modelPosition = modelMatrix * vec4(particlePosition, 1.0);
           vec4 viewPosition = viewMatrix * modelPosition;
@@ -424,6 +430,7 @@ const CustomGeometryParticles = (props) => {
     </points>
   );
 };
+
 
 // const Particles = () => {
 //     const groupRef = useRef();
