@@ -383,7 +383,7 @@ const CustomGeometryParticles = (props) => {
           strength = 1.0 - strength;
           strength = pow(strength, 4.0);
         
-          color = mix(color, vec3(0.7, 0.0, 1.0), vDistance * 0.9); // Purple
+          color = mix(color, vec3(0.9, 0.0, 1.0), vDistance * 0.9); // Purple
           color = mix(vec3(0.0), color, strength);
           gl_FragColor = vec4(color, strength);
         }
