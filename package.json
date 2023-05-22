@@ -23,6 +23,7 @@
     "react-router-dom": "^6.11.1",
     "sort-by": "^1.2.0",
     "three": "^0.152.2",
+    "three-rounded-box": "^0.1.1",
     "three-stdlib": "^2.21.10",
     "uuid": "^9.0.0"
   },

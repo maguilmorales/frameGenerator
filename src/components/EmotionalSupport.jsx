@@ -330,8 +330,7 @@ const Geometries2 = ({rotation, position}) => {
   // This reference gives us direct access to our mesh
   const mesh = useRef();
   const mesh2 = useRef();
-  const part = useRef();
-  const backgroundGroup = useRef();
+
 
   // This is our main render target where we'll render and store the scene as a texture
   const mainRenderTarget = useFBO();
@@ -380,7 +379,7 @@ const Geometries2 = ({rotation, position}) => {
       step: 0.01,
     },
     refraction: {
-      value: 0.25,
+      value: 0.5,
       min: 0,
       max: 1,
       step: 0.01,
@@ -422,6 +421,8 @@ const Geometries2 = ({rotation, position}) => {
   );
 
   useFrame((state, delta) => {
+
+    const { clock } = state;
     const { gl, scene, camera } = state;
     mesh.current.visible = false;
 
@@ -465,6 +466,8 @@ const Geometries2 = ({rotation, position}) => {
     mesh.current.rotation.x += delta;
     mesh.current.rotation.y += delta;
     mesh.current.rotation.z += delta;
+
+
 
   });
 
@@ -606,145 +609,85 @@ const Geometries2 = ({rotation, position}) => {
           uniforms={uniforms}
         />
       </mesh>
-      <mesh ref={mesh2} rotation={rotation} position={position}>
-      <sphereGeometry args={[0.05, 0.05, 20]} />
-        <shaderMaterial
-          key={uuidv4()}
-          vertexShader={`
-            varying vec3 worldNormal;
-            varying vec3 eyeVector;
-            
-            void main() {
-              vec4 worldPos = modelMatrix * vec4(position, 1.0);
-              vec4 mvPosition = viewMatrix * worldPos;
-            
-              gl_Position = projectionMatrix * mvPosition;
-            
-              // vec3 transformedNormal = modelMatrix * normal;
-              worldNormal = normalize(modelMatrix * vec4(normal, 0.0)).xyz;
-              eyeVector =  normalize(worldPos.xyz - cameraPosition);
-            }
-            `}
-          fragmentShader={`
-            uniform float uIorR;
-            uniform float uIorY;
-            uniform float uIorG;
-            uniform float uIorC;
-            uniform float uIorB;
-            uniform float uIorP;
-            
-            uniform float uSaturation;
-            uniform float uChromaticAberration;
-            uniform float uRefractPower;
-            uniform float uFresnelPower;
-            uniform float uShininess;
-            uniform float uDiffuseness;
-            uniform vec3 uLight;
-            
-            uniform vec2 winResolution;
-            uniform sampler2D uTexture;
-            
-            varying vec3 worldNormal;
-            varying vec3 eyeVector;
-            
-            vec3 sat(vec3 rgb, float adjustment) {
-              const vec3 W = vec3(0.2125, 0.7154, 0.0721);
-              vec3 intensity = vec3(dot(rgb, W));
-              return mix(intensity, rgb, adjustment);
-            }
-            
-            float fresnel(vec3 eyeVector, vec3 worldNormal, float power) {
-              float fresnelFactor = abs(dot(eyeVector, worldNormal));
-              float inversefresnelFactor = 1.0 - fresnelFactor;
-              
-              return pow(inversefresnelFactor, power);
-            }
-            
-            float specular(vec3 light, float shininess, float diffuseness) {
-              vec3 normal = worldNormal;
-              vec3 lightVector = normalize(-light);
-              vec3 halfVector = normalize(eyeVector + lightVector);
-            
-              float NdotL = dot(normal, lightVector);
-              float NdotH =  dot(normal, halfVector);
-              float kDiffuse = max(0.0, NdotL);
-              float NdotH2 = NdotH * NdotH;
-            
-              float kSpecular = pow(NdotH2, shininess);
-              return  kSpecular + kDiffuse * diffuseness;
-            }
-            
-            const int LOOP = 16;
-            
-            void main() {
-              float iorRatioRed = 1.0/uIorR;
-              float iorRatioGreen = 1.0/uIorG;
-              float iorRatioBlue = 1.0/uIorB;
-            
-              vec2 uv = gl_FragCoord.xy / winResolution.xy;
-              vec3 normal = worldNormal;
-              vec3 color = vec3(0.0);
-            
-              for ( int i = 0; i < LOOP; i ++ ) {
-                float slide = float(i) / float(LOOP) * 0.1;
-            
-                vec3 refractVecR = refract(eyeVector, normal,(1.0/uIorR));
-                vec3 refractVecY = refract(eyeVector, normal, (1.0/uIorY));
-                vec3 refractVecG = refract(eyeVector, normal, (1.0/uIorG));
-                vec3 refractVecC = refract(eyeVector, normal, (1.0/uIorC));
-                vec3 refractVecB = refract(eyeVector, normal, (1.0/uIorB));
-                vec3 refractVecP = refract(eyeVector, normal, (1.0/uIorP));
-            
-                float r = texture2D(uTexture, uv + refractVecR.xy * (uRefractPower + slide * 1.0) * uChromaticAberration).x * 0.5;
-            
-                float y = (texture2D(uTexture, uv + refractVecY.xy * (uRefractPower + slide * 1.0) * uChromaticAberration).x * 2.0 +
-                            texture2D(uTexture, uv + refractVecY.xy * (uRefractPower + slide * 1.0) * uChromaticAberration).y * 2.0 -
-                            texture2D(uTexture, uv + refractVecY.xy * (uRefractPower + slide * 1.0) * uChromaticAberration).z) / 6.0;
-            
-                float g = texture2D(uTexture, uv + refractVecG.xy * (uRefractPower + slide * 2.0) * uChromaticAberration).y * 0.5;
-            
-                float c = (texture2D(uTexture, uv + refractVecC.xy * (uRefractPower + slide * 2.5) * uChromaticAberration).y * 2.0 +
-                            texture2D(uTexture, uv + refractVecC.xy * (uRefractPower + slide * 2.5) * uChromaticAberration).z * 2.0 -
-                            texture2D(uTexture, uv + refractVecC.xy * (uRefractPower + slide * 2.5) * uChromaticAberration).x) / 6.0;
-                      
-                float b = texture2D(uTexture, uv + refractVecB.xy * (uRefractPower + slide * 3.0) * uChromaticAberration).z * 0.5;
-            
-                float p = (texture2D(uTexture, uv + refractVecP.xy * (uRefractPower + slide * 1.0) * uChromaticAberration).z * 2.0 +
-                            texture2D(uTexture, uv + refractVecP.xy * (uRefractPower + slide * 1.0) * uChromaticAberration).x * 2.0 -
-                            texture2D(uTexture, uv + refractVecP.xy * (uRefractPower + slide * 1.0) * uChromaticAberration).y) / 6.0;
-            
-                float R = r + (2.0*p + 2.0*y - c)/3.0;
-                float G = g + (2.0*y + 2.0*c - p)/3.0;
-                float B = b + (2.0*c + 2.0*p - y)/3.0;
-            
-                color.r += R;
-                color.g += G;
-                color.b += B;
-            
-                color = sat(color, uSaturation);
-              }
-            
-              // Divide by the number of layers to normalize colors (rgb values can be worth up to the value of LOOP)
-              color /= float( LOOP );
-            
-              // Specular
-              float specularLight = specular(uLight, uShininess, uDiffuseness);
-              color += specularLight;
-            
-              // Fresnel
-              float f = fresnel(eyeVector, normal, uFresnelPower);
-              color.rgb += f * vec3(1.0);
-            
-              gl_FragColor = vec4(color, 1.0);
-            }
-            `}
-          uniforms={uniforms}
-        />
-      </mesh>
+
     </>
   );
 };
 
+const DodecahedronSatellites = () => {
+  const matcapTexture = useLoader(TextureLoader, "matcap7.png");
+  const groupRef = useRef();
+
+  useFrame(({ clock } ,delta) => {
+    const t = clock.getElapsedTime(); // Get the elapsed time
+
+    // Calculate the position of each satellite based on the circular path
+    const radius = 0.5; // Radius of the circular path
+    const numSatellites = 8; // Number of satellites
+    const angleIncrement = (2 * Math.PI) / numSatellites; // Angle increment for each satellite
+    const speed = 0.5; // Speed of rotation
+
+    for (let i = 0; i < numSatellites; i++) {
+      const angle = t * speed + i * angleIncrement; // Calculate the angle for each satellite
+      const x = radius * Math.cos(angle); // Calculate the x-coordinate
+      const z = radius * Math.sin(angle); // Calculate the z-coordinate
+
+      // Set the position of the satellite
+      groupRef.current.children[i].position.set(x, 0, z);
+      groupRef.current.children[i].rotation.x += delta
+      groupRef.current.children[i].rotation.y += delta
+      groupRef.current.children[i].rotation.z += delta
+    }
+  });
+
+  return (
+    <group ref={groupRef}>
+      {[...Array(8)].map((_, index) => (
+        <mesh key={index} position={[0, 0, 0]}>
+          <octahedronGeometry args={[0.04]} />
+          <meshMatcapMaterial matcap={matcapTexture}/>
+        </mesh>
+      ))}
+    </group>
+  );
+};
+const TetrahedronSatellites = () => {
+  const matcapTexture = useLoader(TextureLoader, "matcap10.png");
+  const groupRef = useRef();
+
+  useFrame(({ clock } ,delta) => {
+    const t = clock.getElapsedTime(); // Get the elapsed time
+
+    // Calculate the position of each satellite based on the circular path
+    const radius = 0.8; // Radius of the circular path
+    const numSatellites = 8; // Number of satellites
+    const angleIncrement = (2 * Math.PI) / numSatellites; // Angle increment for each satellite
+    const speed = 0.5; // Speed of rotation
+
+    for (let i = 0; i < numSatellites; i++) {
+      const angle = -t * speed + i * angleIncrement; // Calculate the angle for each satellite
+      const x = radius * Math.cos(angle); // Calculate the x-coordinate
+      const z = radius * Math.sin(angle); // Calculate the z-coordinate
+
+      // Set the position of the satellite
+      groupRef.current.children[i].position.set(x, 0, z);
+      groupRef.current.children[i].rotation.x += delta
+      groupRef.current.children[i].rotation.y += delta
+      groupRef.current.children[i].rotation.z += delta
+    }
+  });
+
+  return (
+    <group ref={groupRef}>
+      {[...Array(8)].map((_, index) => (
+        <mesh key={index} position={[0, 0, 0]}>
+          <sphereGeometry args={[0.02, 20,20]} />
+          <meshMatcapMaterial matcap={matcapTexture}/>
+        </mesh>
+      ))}
+    </group>
+  );
+};
 
 const CustomGeometryParticles = (props) => {
   const { count } = props;
@@ -933,6 +876,8 @@ const SemiSphere = ({rotation, position}) => {
   );
 };
 
+
+
 export const EmotionalSupport = () => {
     const backgroundGroup = useRef();
     const columns = range(-7.5, 7.5, 2.5);
@@ -940,7 +885,7 @@ export const EmotionalSupport = () => {
   return (
     <>
     <color attach="background" args={["#000"]} />
-      <ambientLight intensity={1} />
+      <ambientLight intensity={0.7} />
 
       {/* <group ref={backgroundGroup}>
         {columns.map((col, i) =>
@@ -960,21 +905,22 @@ export const EmotionalSupport = () => {
         anchorX="center"
         anchorY="middle"
         fontSize={0.05}
-        position={[-1, 0, 0]}
+        position={[1, 0.5, 0]}
 
       >
         Emotional Support of AI companions
       </Text>
       <group rotation={[9.5,0,-6 ]} >
 
-      <SemiSphere rotation={[Math.PI*2,0,0]} position={[0,0.5,0]}  /> 
+      {/* <SemiSphere rotation={[Math.PI*2,0,0]} position={[0,0.5,0]}  /> 
       <SemiSphere rotation={[Math.PI,0,0]} position={[0,-0.5,0]}  /> 
 
       <Geometries rotation={[Math.PI/2,0,0 ]} position={[0,0.3,0]} />
 
-      <Geometries rotation={[Math.PI/2,0,0 ]} position={[0,-0.3,0]}/>
-
+      <Geometries rotation={[Math.PI/2,0,0 ]} position={[0,-0.3,0]}/> */}
       <Geometries2 />
+      <DodecahedronSatellites />
+      <TetrahedronSatellites />
 
       
       </group>
