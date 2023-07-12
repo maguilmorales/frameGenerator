@@ -9,6 +9,8 @@ import { EmotionalSupportPage } from "../pages/EmotionalSupportPage";
 import { GlassFramesPage } from "../pages/GlassFramesPage";
 import { AiWhispererPage } from "../pages/AiWhispererPage";
 import { StackPage } from "../pages/StackPage";
+import { MediaCenterPage } from "../pages/MediaCenterPage";
+import { MjPromptGenerator } from "../components/MjPromptGenerator";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +56,14 @@ const router = createBrowserRouter([
   {
     path: "/stack",
     element: <StackPage />
+  },
+  {
+    path: "/mediacenter",
+    element: <MediaCenterPage />
+  },
+  {
+    path: "/promptgenerator",
+    element: <MjPromptGenerator />
   }
 ]);
 
