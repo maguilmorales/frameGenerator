@@ -48,3 +48,13 @@ body,
 .checkgroup{
   display: flex;
 }
+
+.dropgroup{
+  display: flex;
+  flex-direction: row;
+}
+
+.groupone{
+  margin-right: 1rem;
+  width: 100%;
+}
