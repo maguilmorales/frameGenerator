@@ -110,7 +110,8 @@ export const MjPromptGenerator = () => {
   // more options for the rest of the dropdowns
 
   const generatePrompt = () => {
-    const newPrompt = `Digital color photography portrait of a ${ethnic} ${people} in a ${spaces}, ${actions}, minimal, ${style} , ${lightSettings} , shot on ${cameraSettings}, film grain, uplifting mood, ${industry} 
+
+    const newPrompt = `Digital color photography portrait of a ${ethnic} ${people} in a ${spacesForIndustry}, ${actions}, minimal, ${style} , ${lightSettings} , shot on ${cameraSettings}, film grain, uplifting mood, ${industry} 
     ${ultraDetail ? ", ultra-detailed" : ""}
     ${ultraPhotoreal ? ", ultra-photoreal" : ""}
     ${ultraRealistic ? ", ultra-realistic" : ""}
@@ -124,86 +125,97 @@ export const MjPromptGenerator = () => {
     setPrompt(newPrompt);
   };
 
+ 
+
+  const industrySpacesMap = {
+    retail: "shop",
+    science: "lab",
+    // add more mappings as needed
+  };
+
+  const spacesForIndustry = industrySpacesMap[industry];
   return (
     <div className="general">
-      <div>
-        <h2>MidJourney Prompt Generator</h2>
+      <div style={{ textAlign:'center', marginBottom: '1rem', color: '#7C52FF'}}>
+        <h1>MidJourney Prompt Generator </h1>
       </div>
       <div className="info">
         <div className="dropgroup">
-        <div className="groupone">
+          <div className="groupone">
+            <Dropdown
+              options={peopleOptions}
+              value={people}
+              setValue={setPeople}
+              label="People 😀"
+            />
+            <Dropdown
+              options={ethnicOptions}
+              value={ethnic}
+              setValue={setEthnic}
+              label="Ethnic 🌎"
+            />
+            <Dropdown
+              options={actionsOptions}
+              value={actions}
+              setValue={setActions}
+              label="Actions 💬"
+            />
+            <Dropdown
+              options={industryOptions}
+              value={industry}
+              setValue={setIndustry}
+              label="Industry 💼"
+            />
+            <Dropdown
+              options={spacesOptions}
+              value={spacesForIndustry}
+              setValue={setSpaces}
+              label="Spaces 🏠"
+              disabled={!!spacesForIndustry}
+            />
+            {spacesForIndustry && (
+  <div style={{ color: 'red', fontSize: '10px', marginBottom: '.5rem' }}>Some of the spaces are limited due to selected industry.</div>
+)}
+            <Dropdown
+              options={styleOptions}
+              value={style}
+              setValue={setStyle}
+              label="Style 🎨"
+            />
+          </div>
+          <div className="grouptwo">
+            <Dropdown
+              options={lightOptions}
+              value={lightSettings}
+              setValue={setLightSettings}
+              label="Light 💡"
+            />
 
-          <Dropdown
-            options={peopleOptions}
-            value={people}
-            setValue={setPeople}
-            label="People"
-          />
-          <Dropdown
-            options={ethnicOptions}
-            value={ethnic}
-            setValue={setEthnic}
-            label="Ethnic"
-          />
-          <Dropdown
-            options={spacesOptions}
-            value={spaces}
-            setValue={setSpaces}
-            label="Spaces"
-          />
-          <Dropdown
-            options={styleOptions}
-            value={style}
-            setValue={setStyle}
-            label="Style"
-          />
-          <Dropdown
-            options={lightOptions}
-            value={lightSettings}
-            setValue={setLightSettings}
-            label="Light"
-          />
-          <Dropdown
-            options={cameraOptions}
-            value={cameraSettings}
-            setValue={setCameraSettings}
-            label="Camera Settings"
-          />
-
-        </div>
-        <div className="grouptwo">
-
-          <Dropdown
-            options={actionsOptions}
-            value={actions}
-            setValue={setActions}
-            label="Actions"
-          />
-          <Dropdown
-            options={industryOptions}
-            value={industry}
-            setValue={setIndustry}
-            label="Industry"
-          />
-                    <Dropdown
-            options={ratioOptions}
-            value={aspectRatio}
-            setValue={setAspectRatio}
-            label="Ratio"
-          />
-          <Dropdown
-            options={qualityOptions}
-            value={quality}
-            setValue={setQuality}
-            label="Quality"
-          />
-                    <Dropdown
-            options={chaosOptions}
-            value={chaos}
-            setValue={setChaos}
-            label="Chaos (Randomness)"
-          />
-        </div>
+            <Dropdown
+              options={cameraOptions}
+              value={cameraSettings}
+              setValue={setCameraSettings}
+              label="Camera Settings 📷"
+            />
+            <Dropdown
+              options={ratioOptions}
+              value={aspectRatio}
+              setValue={setAspectRatio}
+              label="Ratio 📐"
+            />
+            <Dropdown
+              options={qualityOptions}
+              value={quality}
+              setValue={setQuality}
+              label="Quality 💫"
+            />
+            <Dropdown
+              options={chaosOptions}
+              value={chaos}
+              setValue={setChaos}
+              label="Chaos (Randomness) 🎱"
+            />
+          </div>
         </div>
         <div className="checkgroup">
           <div className="checks">
@@ -256,8 +268,8 @@ export const MjPromptGenerator = () => {
         </div>
       </div>
 
-      <button className="button" onClick={generatePrompt}>
-        Generate Prompt
+      <button className="buttonMain" onClick={generatePrompt}>
+        Generate Prompt 🔥
       </button>
 
       <div>
@@ -265,7 +277,7 @@ export const MjPromptGenerator = () => {
         <p>{prompt}</p>
       </div>
 
-      <button onClick={copyToClipboard}>Copy Prompt</button>
+      <button className="buttonCopy"  onClick={copyToClipboard}>Copy Prompt</button>
       {copySuccess && <div style={{ color: "green" }}>{copySuccess}</div>}
     </div>
   );
