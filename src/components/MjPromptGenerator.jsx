@@ -187,7 +187,7 @@ export const MjPromptGenerator = () => {
             label="Quality"
           />
         </div>
-        <div className="groupone">
+        <div className="grouptwo">
           <Dropdown
             options={chaosOptions}
             value={chaos}
