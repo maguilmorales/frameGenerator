@@ -53,7 +53,7 @@ export const MjPromptGenerator = () => {
   ];
   const ethnicOptions = [
     "Latin/Hispanic",
-    "Black/African American",
+    "Black/African",
     "Asian",
     "American Indian",
     "White",
