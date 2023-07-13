@@ -74,6 +74,8 @@ export const MjPromptGenerator = () => {
     "conference Room",
     "hospital",
     "warehouse",
+    'house',
+    'factory',
     "shop" /* more options here */,
   ];
   const styleOptions = [
@@ -130,6 +132,9 @@ export const MjPromptGenerator = () => {
   const industrySpacesMap = {
     retail: "shop",
     science: "lab",
+    manufacturing: 'factory',
+    healthcare: 'hospital',
+    automotive: 'warehouse',
     // add more mappings as needed
   };
 
