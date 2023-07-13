@@ -132,12 +132,7 @@ export const MjPromptGenerator = () => {
       <div className="info">
         <div className="dropgroup">
         <div className="groupone">
-          <Dropdown
-            options={industryOptions}
-            value={industry}
-            setValue={setIndustry}
-            label="Industry"
-          />
+
           <Dropdown
             options={peopleOptions}
             value={people}
@@ -174,7 +169,23 @@ export const MjPromptGenerator = () => {
             setValue={setCameraSettings}
             label="Camera Settings"
           />
+
+        </div>
+        <div className="grouptwo">
+
           <Dropdown
+            options={actionsOptions}
+            value={actions}
+            setValue={setActions}
+            label="Actions"
+          />
+          <Dropdown
+            options={industryOptions}
+            value={industry}
+            setValue={setIndustry}
+            label="Industry"
+          />
+                    <Dropdown
             options={ratioOptions}
             value={aspectRatio}
             setValue={setAspectRatio}
@@ -186,21 +197,12 @@ export const MjPromptGenerator = () => {
             setValue={setQuality}
             label="Quality"
           />
-        </div>
-        <div className="grouptwo">
-          <Dropdown
+                    <Dropdown
             options={chaosOptions}
             value={chaos}
             setValue={setChaos}
             label="Chaos (Randomness)"
           />
-          <Dropdown
-            options={actionsOptions}
-            value={actions}
-            setValue={setActions}
-            label="Actions"
-          />
-
         </div>
         </div>
         <div className="checkgroup">
