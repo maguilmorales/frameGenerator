@@ -1,11 +1,6 @@
 html,
 body,
 #root{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   font-family: 'Archivo-Regular';
 }
 
@@ -21,10 +16,35 @@ body,
   height: 10%;
 }
 
-.info{
+.general{
   display: flex;
   flex-direction: column;
-  width: 300px;
-  margin: auto;
-  margin-bottom: 1rem;
+  justify-content: center;
+  width: 400px;
+  margin: auto
+}
+
+.checks{
+  display: flex;
+  flex-direction: column;
+  margin-right: 1rem;
+
+}
+
+.button{
+  margin-top: 1rem;
+}
+
+.drops{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+}
+
+.info{
+  width: 100%;
+}
+
+.checkgroup{
+  display: flex;
 }
