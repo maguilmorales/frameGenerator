@@ -4,6 +4,7 @@ import Dropdown from "./Dropdown";
 export const MjPromptGenerator = () => {
   const [industry, setIndustry] = useState("general");
   const [people, setPeople] = useState("women");
+  const [ethnic, setEthnic] = useState("white");
   const [spaces, setSpaces] = useState("office");
   const [style, setStyle] = useState("hyperrealistic");
   const [lightSettings, setLightSettings] = useState("bright light");
@@ -41,6 +42,12 @@ export const MjPromptGenerator = () => {
     "man",
     "group of people" /* more options here */,
   ];
+  const ethnicOptions = [
+    "white",
+    "black",
+    "latin",
+    "asian",
+  ];
   const spacesOptions = [
     "office",
     "lab",
@@ -77,13 +84,13 @@ export const MjPromptGenerator = () => {
     "macro lens", /* more options here */,
   ];
   const ratioOptions = ["1:1", "1:2", '1:3', "2:1", "3:2", '4:3', '16:9', '5:1'];
-  const quantity = ["1", "2", "3", "4"];
-  const qualityOptions = ["4K", "8k", "ultra-detailed", "ultra-photoreal", 'ultra-realistic'];
+  const detailLevel = ["ultra-detailed", "ultra-photoreal", 'ultra-realistic'];
+  const qualityOptions = [".25", ".5", "1", "2"];
 
   // more options for the rest of the dropdowns
 
   const generatePrompt = () => {
-    const newPrompt = `Digital color photography portrait of a ${people} in a ${spaces}, smiling, minimal, ${style} , ${lightSettings} , shot on ${cameraSettings}, film grain, uplifting mood, ${industry} --ar ${aspectRatio} --q ${quantityNumber} ,${quality}`;
+    const newPrompt = `Digital color photography portrait of a ${people} in a ${spaces}, smiling, minimal, ${style} , ${lightSettings} , shot on ${cameraSettings}, film grain, uplifting mood, ${industry} --ar ${aspectRatio} --q ${qualityOptions} ,${detailLevel}`;
     setPrompt(newPrompt);
   };
 
