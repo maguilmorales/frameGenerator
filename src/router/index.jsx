@@ -11,6 +11,10 @@ import { AiWhispererPage } from "../pages/AiWhispererPage";
 import { StackPage } from "../pages/StackPage";
 import { MediaCenterPage } from "../pages/MediaCenterPage";
 import { MjPromptGenerator } from "../components/MjPromptGenerator";
+import { LogoPage } from "../pages/LogoPage";
+
+
+
 
 const router = createBrowserRouter([
   {
@@ -20,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: "/sales",
     element: <SalesPage />,
+  },
+  {
+    path: "/logo",
+    element: <LogoPage />,
   },
   {
     path: "/frame",

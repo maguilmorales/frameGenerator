@@ -5,6 +5,7 @@ import {
   Text3D,
   SpotLight,
   RandomizedLight,
+  Html
 } from "@react-three/drei";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { Leva, folder, useControls } from "leva";
@@ -15,9 +16,10 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextureLoader } from "three/src/loaders/TextureLoader";
 
 function RoundedRect() {
-  const width = 8;
-  const height = 11;
-  const radius = 1;
+  const width = 7
+  ;
+  const height = 16.5;
+  const radius = 0.0001;
 
   // Create the rounded rectangle shape
   const roundedRectShape = new THREE.Shape();
@@ -45,7 +47,7 @@ function RoundedRect() {
 
   // Extrude the shape with bevels
   const extrudeSettings = {
-    depth: 0.2,
+    depth: 0.3,
     bevelEnabled: true,
     bevelSegments: 100,
     steps: 1,
@@ -124,10 +126,10 @@ const Frame = () => {
       value: new THREE.Vector3(-1.0, 1.0, 1.0),
     },
     diffuseness: {
-      value: 0.2,
+      value: 0.00,
     },
     shininess: {
-      value: 18.0,
+      value: 90.0,
     },
     fresnelPower: {
       value: 2.0,
@@ -142,13 +144,13 @@ const Frame = () => {
     }),
     saturation: { value: 1.0, min: 1, max: 1.25, step: 0.01 },
     chromaticAberration: {
-      value: 0.02,
+      value: 0.0,
       min: 0,
       max: 1.5,
       step: 0.01,
     },
     refraction: {
-      value: 0.25,
+      value: 0.0,
       min: 0,
       max: 1,
       step: 0.01,
@@ -381,7 +383,7 @@ export const GlassFrames = () => {
       //groupGeom.current.rotation.y += delta
     })
 
-  const ui = useLoader(TextureLoader, "Ui.png");
+  const ui = useLoader(TextureLoader, "UI_DP.png");
   const grad = useLoader(TextureLoader, "gradientPlane.png");
   const pic = useLoader(TextureLoader, "pic.png");
   const label = useLoader(TextureLoader, "banner.png");
@@ -408,15 +410,16 @@ export const GlassFrames = () => {
 
 
     <>
-      <OrbitControls enableDamping />
-      <color attach="background" args={["#9643FF"]} />
+
+      <OrbitControls/>
+      <color attach="background" args={["#F8F7F6"]} />
       <ambientLight intensity={1} />
 
       <group ref={groupGeom}>
      
         <Frame />
-        <mesh position={[0, 0, -0.1]}>
-          <planeGeometry args={[8, 11]} />
+        <mesh position={[-0.35, 0, 0.3]}>
+          <planeGeometry args={[8, 18]} />
           <shaderMaterial
             vertexShader={`
             uniform float u_time;
@@ -444,35 +447,6 @@ void main(){
           />
         </mesh>
       </group>
-      <mesh position={[8, 5, -3]}>
-          <planeGeometry args={[20, 20]} />
-          <shaderMaterial
-            vertexShader={`
-            uniform float u_time;
-varying vec2 vUv;
-
-void main(){
-  vUv = uv;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-}
-              `}
-            fragmentShader={`varying vec2 vUv;
-            uniform float u_time;
-            uniform sampler2D uTexture2;
-            
-            void main() {
-              float time = u_time;
-            
-              vec2 uv = vUv;
-              vec4 color = texture2D(uTexture2, uv);
-              
-              gl_FragColor = color;
-            }`}
-            uniforms={uniforms}
-            transparent={true}
-          />
-        </mesh>
-
    
     </>
   );

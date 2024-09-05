@@ -1,7 +1,10 @@
+
+
 html,
 body,
 #root{
   font-family: 'Archivo', sans-serif ;
+  height: 100%;
 }
 
 .title
@@ -89,3 +92,4 @@ label{
 .grouptwo{
   width: 100%;
 }
+
