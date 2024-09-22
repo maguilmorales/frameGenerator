@@ -7,6 +7,11 @@ body,
   height: 100%;
 }
 
+body {
+
+  background: linear-gradient(349deg, rgba(124,82,255,1) 0%, rgba(249,0,142,1) 50%, rgba(246,171,60,1) 100%);#ff0000;   
+}
+
 .title
 {
   font-size: 90px;

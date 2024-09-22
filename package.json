@@ -13,6 +13,7 @@
     "@react-three/drei": "^9.66.1",
     "@react-three/fiber": "^8.13.0",
     "@react-three/postprocessing": "^2.9.1",
+    "@rive-app/react-canvas": "^4.14.0",
     "leva": "^0.9.34",
     "lil-gui": "^0.18.1",
     "localforage": "^1.10.0",

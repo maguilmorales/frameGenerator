@@ -12,9 +12,7 @@ import { StackPage } from "../pages/StackPage";
 import { MediaCenterPage } from "../pages/MediaCenterPage";
 import { MjPromptGenerator } from "../components/MjPromptGenerator";
 import { LogoPage } from "../pages/LogoPage";
-
-
-
+import { DialpadRiveIcon } from "../pages/DialpadRiveIcon";
 
 const router = createBrowserRouter([
   {
@@ -72,6 +70,10 @@ const router = createBrowserRouter([
   {
     path: "/promptgenerator",
     element: <MjPromptGenerator />
+  },
+  {
+    path: '/rive',
+    element: <DialpadRiveIcon /> 
   }
 ]);
 
